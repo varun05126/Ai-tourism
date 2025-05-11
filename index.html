@@ -4,265 +4,160 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Tourism Planner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Montserrat', sans-serif;
-    }
-
     body {
-      background: url('https://source.unsplash.com/1600x900/?travel,world') no-repeat center center fixed;
-      background-size: cover;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    .overlay {
-      background: rgba(0, 0, 0, 0.7);
-      min-height: 100vh;
-      padding-bottom: 50px;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, #1c1c1c, #2c3e50);
+      color: white;
     }
 
     header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 30px 0;
       text-align: center;
-      padding: 60px 20px 30px;
+      color: #fff;
+      background-image: url("https://source.unsplash.com/1600x400/?travel,landscape");
+      background-size: cover;
+      background-position: center;
     }
 
     header h1 {
       font-size: 3em;
-      margin-bottom: 10px;
-      color: #ffe600;
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      margin-bottom: 40px;
-    }
-
-    nav ul li a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 10px 15px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-      transition: 0.3s;
-    }
-
-    nav ul li a:hover {
-      background: rgba(255, 255, 255, 0.3);
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+      border-radius: 10px;
+      display: inline-block;
     }
 
     section {
       padding: 40px 20px;
-      max-width: 1000px;
+      max-width: 1100px;
       margin: auto;
+    }
+
+    h2 {
+      color: #ffe600;
+      margin-bottom: 20px;
       text-align: center;
     }
 
-    section h2 {
-      font-size: 2.2em;
-      color: #ffd700;
-      margin-bottom: 20px;
+    .btn-group {
+      text-align: center;
+      margin-bottom: 30px;
     }
 
     .btn {
-      padding: 12px 30px;
-      font-size: 1.1em;
       background: #00c9ff;
-      color: #000;
+      color: white;
+      padding: 12px 20px;
+      font-size: 1em;
       border: none;
-      border-radius: 8px;
-      cursor: pointer;
+      border-radius: 10px;
       margin: 10px;
+      cursor: pointer;
       transition: 0.3s;
     }
 
     .btn:hover {
-      background: #00b7ff;
+      background: #005bea;
     }
 
     .destination-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      margin-top: 30px;
     }
 
     .destination-card {
       background: rgba(255, 255, 255, 0.1);
-      padding: 10px;
       border-radius: 10px;
+      padding: 15px;
       transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
-    .destination-card img {
-      width: 100%;
-      height: 160px;
-      border-radius: 10px;
-      object-fit: cover;
+    .destination-card:hover {
+      transform: scale(1.05);
     }
 
-    .destination-card p {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    input[type="text"] {
-      padding: 12px;
+    .destination-card .bg-img {
+      height: 150px;
       border-radius: 8px;
-      border: none;
-      width: 300px;
-      margin-top: 10px;
-    }
-
-    #budget-output, #hotel-results {
-      margin-top: 20px;
-      padding: 20px;
-      background: rgba(0, 0, 0, 0.5);
-      border-radius: 10px;
-      text-align: left;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 10px;
     }
 
     footer {
       text-align: center;
-      margin-top: 50px;
+      background: #111;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.6);
+      margin-top: 40px;
     }
   </style>
 </head>
 <body>
-  <div class="overlay">
-    <header>
-      <h1>AI Tourism Planner</h1>
-      <nav>
-        <ul>
-          <li><a href="#home">Home</a></li>
-          <li><a href="#explore">Explore</a></li>
-          <li><a href="#budget">Budget</a></li>
-          <li><a href="#hotels">Hotels</a></li>
-        </ul>
-      </nav>
-    </header>
 
-    <section id="home">
-      <h2>Discover Your Mood-Based Trip</h2>
-      <button class="btn" onclick="suggestByMood()">Suggest a Trip</button>
-    </section>
+<header>
+  <h1>Explore with AI Tourism Planner</h1>
+</header>
 
-    <section id="explore">
-      <h2>Explore Popular Places</h2>
-      <div class="destination-grid" id="destinations"></div>
-    </section>
-
-    <section id="budget">
-      <h2>Plan a Trip by Budget</h2>
-      <button class="btn" onclick="calculateBudget()">Calculate Budget</button>
-      <div id="budget-output"></div>
-    </section>
-
-    <section id="hotels">
-      <h2>Recommended Hotels</h2>
-      <div id="hotel-results"></div>
-    </section>
-
-    <footer>
-      <p>© 2025 AI Tourism Planner. Crafted for curious travelers.</p>
-    </footer>
+<section>
+  <h2>Select Your Mood</h2>
+  <div class="btn-group">
+    <button class="btn" onclick="suggestMood('romantic')">Romantic</button>
+    <button class="btn" onclick="suggestMood('devotional')">Devotional</button>
+    <button class="btn" onclick="suggestMood('adventure')">Adventure</button>
+    <button class="btn" onclick="suggestMood('relaxing')">Relaxing</button>
   </div>
 
-  <script>
-    const places = [
-      { name: "Taj Mahal, Agra", img: "https://source.unsplash.com/400x300/?tajmahal" },
-      { name: "Goa Beach", img: "https://source.unsplash.com/400x300/?goa" },
-      { name: "Manali", img: "https://source.unsplash.com/400x300/?manali" },
-      { name: "Golden Temple", img: "https://source.unsplash.com/400x300/?goldentemple" },
-      { name: "Udaipur Palace", img: "https://source.unsplash.com/400x300/?udaipur" },
-      { name: "Rishikesh", img: "https://source.unsplash.com/400x300/?rishikesh" }
-    ];
+  <div id="suggestions" class="destination-grid"></div>
+</section>
 
-    const moodSuggestions = {
-      romantic: ["Goa", "Manali", "Udaipur", "Shimla"],
-      devotional: ["Varanasi", "Rameswaram", "Golden Temple", "Rishikesh"],
-      adventure: ["Leh", "Rishikesh", "Andaman", "Spiti Valley"],
-      relaxing: ["Alleppey", "Coorg", "Munnar", "Darjeeling"]
-    };
+<footer>
+  <p>&copy; 2025 AI Tourism Planner. All rights reserved.</p>
+</footer>
 
-    const hotelSuggestions = {
-      low: ["Zostel Rishikesh", "City Lodge Goa", "Hotel Amar Agra"],
-      medium: ["Radisson Goa", "Club Mahindra Manali", "Holiday Inn Agra"],
-      high: ["Taj Lake Palace", "The Leela Goa", "JW Marriott Mussoorie"]
-    };
+<script>
+  const moodDestinations = {
+    romantic: [
+      { name: "Udaipur", img: "https://source.unsplash.com/400x300/?udaipur,lake" },
+      { name: "Manali", img: "https://source.unsplash.com/400x300/?manali,couple" },
+      { name: "Goa Beach", img: "https://source.unsplash.com/400x300/?goa,beach,sunset" }
+    ],
+    devotional: [
+      { name: "Varanasi", img: "https://source.unsplash.com/400x300/?varanasi,temple" },
+      { name: "Tirupati", img: "https://source.unsplash.com/400x300/?tirupati" },
+      { name: "Rameswaram", img: "https://source.unsplash.com/400x300/?rameswaram,temple" }
+    ],
+    adventure: [
+      { name: "Rishikesh", img: "https://source.unsplash.com/400x300/?rishikesh,rafting" },
+      { name: "Leh Ladakh", img: "https://source.unsplash.com/400x300/?leh,ladakh" },
+      { name: "Spiti Valley", img: "https://source.unsplash.com/400x300/?spiti,valley" }
+    ],
+    relaxing: [
+      { name: "Kerala Backwaters", img: "https://source.unsplash.com/400x300/?kerala,backwaters" },
+      { name: "Alleppey", img: "https://source.unsplash.com/400x300/?alleppey,houseboat" },
+      { name: "Andaman Islands", img: "https://source.unsplash.com/400x300/?andaman,island" }
+    ]
+  };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const container = document.getElementById("destinations");
-      places.forEach(place => {
-        const div = document.createElement("div");
-        div.className = "destination-card";
-        div.innerHTML = `<img src="${place.img}" alt="${place.name}"><p>${place.name}</p>`;
-        div.onclick = () => openMaps(place.name);
-        container.appendChild(div);
-      });
+  function suggestMood(mood) {
+    const container = document.getElementById("suggestions");
+    container.innerHTML = '';
+    moodDestinations[mood].forEach(place => {
+      const card = document.createElement("div");
+      card.className = "destination-card";
+      card.innerHTML = `
+        <div class="bg-img" style="background-image: url('${place.img}');"></div>
+        <h3>${place.name}</h3>
+      `;
+      container.appendChild(card);
     });
+  }
+</script>
 
-    function suggestByMood() {
-      const mood = prompt("What's your travel mood? (romantic, devotional, adventure, relaxing)").toLowerCase();
-      if (!moodSuggestions[mood]) {
-        alert("Mood not recognized. Try romantic, devotional, adventure, or relaxing.");
-        return;
-      }
-      const suggestions = moodSuggestions[mood].map(place => `• ${place}`).join("\n");
-      alert(`Top ${mood} destinations:\n${suggestions}`);
-    }
-
-    function calculateBudget() {
-      let budget = prompt("Enter your budget in ₹:");
-      if (!budget || isNaN(budget)) return alert("Please enter a valid number.");
-      budget = parseFloat(budget);
-
-      const hotel = budget * 0.4;
-      const food = budget * 0.2;
-      const transport = budget * 0.3;
-      const extras = budget * 0.1;
-
-      let hotelType, tripType, hotels;
-      if (budget < 5000) {
-        hotelType = "Budget Hotel";
-        tripType = "Short Weekend Trip Nearby";
-        hotels = hotelSuggestions.low;
-      } else if (budget < 20000) {
-        hotelType = "3-Star Hotel";
-        tripType = "Moderate Vacation Trip";
-        hotels = hotelSuggestions.medium;
-      } else {
-        hotelType = "Luxury Hotel";
-        tripType = "Premium Destination Vacation";
-        hotels = hotelSuggestions.high;
-      }
-
-      document.getElementById("budget-output").innerHTML = `
-        <p><strong>Trip Type:</strong> ${tripType}</p>
-        <p><strong>Hotel:</strong> ₹${hotel.toFixed(0)} (${hotelType})</p>
-        <p><strong>Food:</strong> ₹${food.toFixed(0)}</p>
-        <p><strong>Transport:</strong> ₹${transport.toFixed(0)}</p>
-        <p><strong>Extras:</strong> ₹${extras.toFixed(0)}</p>
-      `;
-
-      document.getElementById("hotel-results").innerHTML = `
-        <ul>${hotels.map(h => `<li>${h}</li>`).join("")}</ul>
-      `;
-    }
-
-    function openMaps(place) {
-      window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`);
-    }
-  </script>
 </body>
 </html>
