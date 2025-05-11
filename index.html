@@ -1,83 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Tourism Planner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Poppins', sans-serif;
+      box-sizing: border-box;
+      font-family: 'Montserrat', sans-serif;
     }
 
     body {
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      background: url('https://source.unsplash.com/1600x900/?travel,world') no-repeat center center fixed;
+      background-size: cover;
       color: #fff;
-      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.7);
+      min-height: 100vh;
+      padding-bottom: 50px;
     }
 
     header {
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      padding: 20px;
       text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      padding: 60px 20px 30px;
     }
 
     header h1 {
-      font-size: 2.5em;
-      color: #fff;
+      font-size: 3em;
       margin-bottom: 10px;
+      color: #ffe600;
     }
 
     nav ul {
       list-style: none;
       display: flex;
       justify-content: center;
-      gap: 20px;
+      gap: 30px;
+      margin-bottom: 40px;
     }
 
     nav ul li a {
       color: #fff;
       text-decoration: none;
-      padding: 10px 18px;
-      background: rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      transition: all 0.3s ease;
+      font-weight: bold;
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      transition: 0.3s;
     }
 
     nav ul li a:hover {
-      background: rgba(255, 255, 255, 0.35);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     section {
-      padding: 60px 20px;
-      text-align: center;
-      max-width: 1200px;
+      padding: 40px 20px;
+      max-width: 1000px;
       margin: auto;
+      text-align: center;
     }
 
-    h2 {
+    section h2 {
       font-size: 2.2em;
+      color: #ffd700;
       margin-bottom: 20px;
-      color: #ffe600;
     }
 
     .btn {
-      background: #00c9ff;
-      color: white;
-      padding: 12px 25px;
+      padding: 12px 30px;
       font-size: 1.1em;
+      background: #00c9ff;
+      color: #000;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       cursor: pointer;
-      transition: 0.3s ease;
+      margin: 10px;
+      transition: 0.3s;
     }
 
     .btn:hover {
-      background: #005bea;
+      background: #00b7ff;
     }
 
     .destination-grid {
@@ -89,149 +97,172 @@
 
     .destination-card {
       background: rgba(255, 255, 255, 0.1);
-      padding: 15px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      transition: transform 0.3s ease;
-    }
-
-    .destination-card:hover {
-      transform: scale(1.05);
+      padding: 10px;
+      border-radius: 10px;
+      transition: 0.3s;
     }
 
     .destination-card img {
       width: 100%;
-      height: 150px;
-      object-fit: cover;
+      height: 160px;
       border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .destination-card p {
+      margin-top: 10px;
+      font-weight: bold;
     }
 
     input[type="text"] {
       padding: 12px;
-      width: 300px;
+      border-radius: 8px;
       border: none;
-      border-radius: 10px;
+      width: 300px;
       margin-top: 10px;
     }
 
     #budget-output, #hotel-results {
-      background: rgba(0, 0, 0, 0.25);
+      margin-top: 20px;
       padding: 20px;
+      background: rgba(0, 0, 0, 0.5);
       border-radius: 10px;
       text-align: left;
-      margin-top: 20px;
     }
 
     footer {
       text-align: center;
+      margin-top: 50px;
       padding: 20px;
-      background: #111;
+      background: rgba(0, 0, 0, 0.6);
     }
   </style>
 </head>
 <body>
+  <div class="overlay">
+    <header>
+      <h1>AI Tourism Planner</h1>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#explore">Explore</a></li>
+          <li><a href="#budget">Budget</a></li>
+          <li><a href="#hotels">Hotels</a></li>
+        </ul>
+      </nav>
+    </header>
 
-<header>
-  <h1>AI Tourism Planner</h1>
-  <nav>
-    <ul>
-      <li><a href="#home">Home</a></li>
-      <li><a href="#mood">Your Mood</a></li>
-      <li><a href="#places">Destinations</a></li>
-      <li><a href="#budget">Budget</a></li>
-    </ul>
-  </nav>
-</header>
+    <section id="home">
+      <h2>Discover Your Mood-Based Trip</h2>
+      <button class="btn" onclick="suggestByMood()">Suggest a Trip</button>
+    </section>
 
-<section id="home">
-  <h2>Plan Your Next Journey with AI</h2>
-  <button class="btn" onclick="suggestByMood()">Suggest Trip by Mood</button>
-</section>
+    <section id="explore">
+      <h2>Explore Popular Places</h2>
+      <div class="destination-grid" id="destinations"></div>
+    </section>
 
-<section id="mood">
-  <h2>How Are You Feeling Today?</h2>
-  <p>Click the button above and get trip suggestions based on your mood (romantic, devotional, adventure, etc.)</p>
-</section>
+    <section id="budget">
+      <h2>Plan a Trip by Budget</h2>
+      <button class="btn" onclick="calculateBudget()">Calculate Budget</button>
+      <div id="budget-output"></div>
+    </section>
 
-<section id="places">
-  <h2>Top Places in India</h2>
-  <div class="destination-grid" id="destinations"></div>
-</section>
+    <section id="hotels">
+      <h2>Recommended Hotels</h2>
+      <div id="hotel-results"></div>
+    </section>
 
-<section id="budget">
-  <h2>Estimate Your Budget</h2>
-  <button class="btn" onclick="calculateBudget()">Estimate My Trip</button>
-  <div id="budget-output"></div>
-</section>
+    <footer>
+      <p>© 2025 AI Tourism Planner. Crafted for curious travelers.</p>
+    </footer>
+  </div>
 
-<footer>
-  <p>&copy; 2025 AI Tourism Planner. All rights reserved.</p>
-</footer>
+  <script>
+    const places = [
+      { name: "Taj Mahal, Agra", img: "https://source.unsplash.com/400x300/?tajmahal" },
+      { name: "Goa Beach", img: "https://source.unsplash.com/400x300/?goa" },
+      { name: "Manali", img: "https://source.unsplash.com/400x300/?manali" },
+      { name: "Golden Temple", img: "https://source.unsplash.com/400x300/?goldentemple" },
+      { name: "Udaipur Palace", img: "https://source.unsplash.com/400x300/?udaipur" },
+      { name: "Rishikesh", img: "https://source.unsplash.com/400x300/?rishikesh" }
+    ];
 
-<script>
-  const places = [
-    { name: "Taj Mahal, Agra", img: "https://source.unsplash.com/featured/?tajmahal" },
-    { name: "Golden Temple, Amritsar", img: "https://source.unsplash.com/featured/?goldentemple" },
-    { name: "Manali, Himachal", img: "https://source.unsplash.com/featured/?manali" },
-    { name: "Goa Beaches", img: "https://source.unsplash.com/featured/?goa" },
-    { name: "Udaipur Palace", img: "https://source.unsplash.com/featured/?udaipurpalace" },
-    { name: "Kedarnath Temple", img: "https://source.unsplash.com/featured/?kedarnath" },
-    { name: "Rishikesh", img: "https://source.unsplash.com/featured/?rishikesh" },
-    { name: "Darjeeling", img: "https://source.unsplash.com/featured/?darjeeling" }
-  ];
+    const moodSuggestions = {
+      romantic: ["Goa", "Manali", "Udaipur", "Shimla"],
+      devotional: ["Varanasi", "Rameswaram", "Golden Temple", "Rishikesh"],
+      adventure: ["Leh", "Rishikesh", "Andaman", "Spiti Valley"],
+      relaxing: ["Alleppey", "Coorg", "Munnar", "Darjeeling"]
+    };
 
-  const moodSuggestions = {
-    romantic: ["Udaipur", "Goa", "Manali", "Ooty"],
-    devotional: ["Varanasi", "Rishikesh", "Tirupati", "Golden Temple"],
-    adventure: ["Leh", "Manali", "Rishikesh", "Jim Corbett"],
-    relaxing: ["Alleppey", "Coorg", "Munnar", "Darjeeling"]
-  };
+    const hotelSuggestions = {
+      low: ["Zostel Rishikesh", "City Lodge Goa", "Hotel Amar Agra"],
+      medium: ["Radisson Goa", "Club Mahindra Manali", "Holiday Inn Agra"],
+      high: ["Taj Lake Palace", "The Leela Goa", "JW Marriott Mussoorie"]
+    };
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const container = document.getElementById("destinations");
-    places.forEach(place => {
-      const div = document.createElement("div");
-      div.className = "destination-card";
-      div.innerHTML = `<img src="${place.img}" alt="${place.name}"><p>${place.name}</p>`;
-      div.onclick = () => openMaps(place.name);
-      container.appendChild(div);
+    document.addEventListener("DOMContentLoaded", () => {
+      const container = document.getElementById("destinations");
+      places.forEach(place => {
+        const div = document.createElement("div");
+        div.className = "destination-card";
+        div.innerHTML = `<img src="${place.img}" alt="${place.name}"><p>${place.name}</p>`;
+        div.onclick = () => openMaps(place.name);
+        container.appendChild(div);
+      });
     });
-  });
 
-  function suggestByMood() {
-    const mood = prompt("What's your mood? (romantic, devotional, adventure, relaxing)").toLowerCase();
-    if (!moodSuggestions[mood]) {
-      alert("Mood not recognized. Try romantic, devotional, adventure, or relaxing.");
-      return;
+    function suggestByMood() {
+      const mood = prompt("What's your travel mood? (romantic, devotional, adventure, relaxing)").toLowerCase();
+      if (!moodSuggestions[mood]) {
+        alert("Mood not recognized. Try romantic, devotional, adventure, or relaxing.");
+        return;
+      }
+      const suggestions = moodSuggestions[mood].map(place => `• ${place}`).join("\n");
+      alert(`Top ${mood} destinations:\n${suggestions}`);
     }
-    const suggestions = moodSuggestions[mood].map(place => `• ${place}`).join("\n");
-    alert(`Here are some ${mood} places to visit:\n${suggestions}`);
-  }
 
-  function calculateBudget() {
-    let budget = prompt("Enter your budget in ₹:");
-    if (!budget || isNaN(budget)) return alert("Please enter a valid number.");
-    budget = parseFloat(budget);
+    function calculateBudget() {
+      let budget = prompt("Enter your budget in ₹:");
+      if (!budget || isNaN(budget)) return alert("Please enter a valid number.");
+      budget = parseFloat(budget);
 
-    const hotel = budget * 0.4;
-    const food = budget * 0.2;
-    const transport = budget * 0.3;
-    const extras = budget * 0.1;
+      const hotel = budget * 0.4;
+      const food = budget * 0.2;
+      const transport = budget * 0.3;
+      const extras = budget * 0.1;
 
-    const hotelType = hotel < 2000 ? "Budget Hotel" : hotel < 5000 ? "3-Star Hotel" : hotel < 10000 ? "4-Star Hotel" : "Luxury Hotel";
+      let hotelType, tripType, hotels;
+      if (budget < 5000) {
+        hotelType = "Budget Hotel";
+        tripType = "Short Weekend Trip Nearby";
+        hotels = hotelSuggestions.low;
+      } else if (budget < 20000) {
+        hotelType = "3-Star Hotel";
+        tripType = "Moderate Vacation Trip";
+        hotels = hotelSuggestions.medium;
+      } else {
+        hotelType = "Luxury Hotel";
+        tripType = "Premium Destination Vacation";
+        hotels = hotelSuggestions.high;
+      }
 
-    document.getElementById("budget-output").innerHTML = `
-      <p><strong>Hotel:</strong> ₹${hotel.toFixed(0)} (${hotelType})</p>
-      <p><strong>Food:</strong> ₹${food.toFixed(0)}</p>
-      <p><strong>Transport:</strong> ₹${transport.toFixed(0)}</p>
-      <p><strong>Extras:</strong> ₹${extras.toFixed(0)}</p>
-    `;
-  }
+      document.getElementById("budget-output").innerHTML = `
+        <p><strong>Trip Type:</strong> ${tripType}</p>
+        <p><strong>Hotel:</strong> ₹${hotel.toFixed(0)} (${hotelType})</p>
+        <p><strong>Food:</strong> ₹${food.toFixed(0)}</p>
+        <p><strong>Transport:</strong> ₹${transport.toFixed(0)}</p>
+        <p><strong>Extras:</strong> ₹${extras.toFixed(0)}</p>
+      `;
 
-  function openMaps(place) {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`);
-  }
-</script>
+      document.getElementById("hotel-results").innerHTML = `
+        <ul>${hotels.map(h => `<li>${h}</li>`).join("")}</ul>
+      `;
+    }
 
+    function openMaps(place) {
+      window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`);
+    }
+  </script>
 </body>
 </html>
