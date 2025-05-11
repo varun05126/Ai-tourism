@@ -2,61 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AI Tourism Planner</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap" rel="stylesheet">
   <style>
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
       font-family: 'Poppins', sans-serif;
     }
 
     body {
-      background: linear-gradient(to right, #1e3c72, #2a5298);
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
       color: #fff;
+      line-height: 1.6;
     }
 
     header {
-      background: #ff7e5f;
-      padding: 20px 0;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      padding: 20px;
       text-align: center;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      color: #fff;
+      margin-bottom: 10px;
     }
 
     nav ul {
+      list-style: none;
       display: flex;
       justify-content: center;
-      list-style: none;
       gap: 20px;
     }
 
     nav ul li a {
       color: #fff;
       text-decoration: none;
-      font-weight: 600;
-      padding: 10px 15px;
+      padding: 10px 18px;
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 8px;
-      background: rgba(255,255,255,0.1);
-      transition: 0.3s;
+      transition: all 0.3s ease;
     }
 
     nav ul li a:hover {
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.35);
     }
 
     section {
-      padding: 40px 20px;
+      padding: 60px 20px;
       text-align: center;
       max-width: 1200px;
       margin: auto;
     }
 
     h2 {
-      font-size: 2.5em;
-      color: #ffe600;
+      font-size: 2.2em;
       margin-bottom: 20px;
+      color: #ffe600;
     }
 
     .btn {
@@ -67,7 +73,7 @@
       border: none;
       border-radius: 10px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.3s ease;
     }
 
     .btn:hover {
@@ -78,15 +84,15 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
-      padding-top: 30px;
+      margin-top: 30px;
     }
 
     .destination-card {
       background: rgba(255, 255, 255, 0.1);
       padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      transition: transform 0.3s;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
     }
 
     .destination-card:hover {
@@ -97,23 +103,23 @@
       width: 100%;
       height: 150px;
       object-fit: cover;
-      border-radius: 8px;
-    }
-
-    #budget-output, #hotel-results {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      margin-top: 20px;
       border-radius: 10px;
-      text-align: left;
     }
 
     input[type="text"] {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
+      padding: 12px;
       width: 300px;
+      border: none;
+      border-radius: 10px;
       margin-top: 10px;
+    }
+
+    #budget-output, #hotel-results {
+      background: rgba(0, 0, 0, 0.25);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: left;
+      margin-top: 20px;
     }
 
     footer {
@@ -126,37 +132,36 @@
 <body>
 
 <header>
-  <h1>Explore the World with AI Tourism Planner</h1>
+  <h1>AI Tourism Planner</h1>
   <nav>
     <ul>
       <li><a href="#home">Home</a></li>
-      <li><a href="#india">India</a></li>
+      <li><a href="#mood">Your Mood</a></li>
+      <li><a href="#places">Destinations</a></li>
       <li><a href="#budget">Budget</a></li>
-      <li><a href="#hotel-search">Hotels</a></li>
     </ul>
   </nav>
 </header>
 
 <section id="home">
-  <h2>Discover Your Next Adventure</h2>
-  <button class="btn" onclick="planTrip()">Plan a Trip</button>
+  <h2>Plan Your Next Journey with AI</h2>
+  <button class="btn" onclick="suggestByMood()">Suggest Trip by Mood</button>
 </section>
 
-<section id="india">
-  <h2>Explore Popular Destinations</h2>
+<section id="mood">
+  <h2>How Are You Feeling Today?</h2>
+  <p>Click the button above and get trip suggestions based on your mood (romantic, devotional, adventure, etc.)</p>
+</section>
+
+<section id="places">
+  <h2>Top Places in India</h2>
   <div class="destination-grid" id="destinations"></div>
 </section>
 
 <section id="budget">
-  <h2>Plan Your Budget</h2>
+  <h2>Estimate Your Budget</h2>
   <button class="btn" onclick="calculateBudget()">Estimate My Trip</button>
   <div id="budget-output"></div>
-</section>
-
-<section id="hotel-search">
-  <h2>Find Hotels</h2>
-  <input id="autocomplete" type="text" placeholder="Enter a city">
-  <div id="hotel-results"></div>
 </section>
 
 <footer>
@@ -166,16 +171,21 @@
 <script>
   const places = [
     { name: "Taj Mahal, Agra", img: "https://source.unsplash.com/featured/?tajmahal" },
-    { name: "Charminar, Hyderabad", img: "https://source.unsplash.com/featured/?charminar" },
-    { name: "India Gate, Delhi", img: "https://source.unsplash.com/featured/?indiagate" },
-    { name: "Gateway of India, Mumbai", img: "https://source.unsplash.com/featured/?gatewayofindia" },
     { name: "Golden Temple, Amritsar", img: "https://source.unsplash.com/featured/?goldentemple" },
-    { name: "Mysore Palace", img: "https://source.unsplash.com/featured/?mysorepalace" },
-    { name: "Qutub Minar", img: "https://source.unsplash.com/featured/?qutubminar" },
-    { name: "Lotus Temple", img: "https://source.unsplash.com/featured/?lotustemple" },
-    { name: "Ranthambore Park", img: "https://source.unsplash.com/featured/?tigerpark" },
-    { name: "Udaipur Palace", img: "https://source.unsplash.com/featured/?udaipurpalace" }
+    { name: "Manali, Himachal", img: "https://source.unsplash.com/featured/?manali" },
+    { name: "Goa Beaches", img: "https://source.unsplash.com/featured/?goa" },
+    { name: "Udaipur Palace", img: "https://source.unsplash.com/featured/?udaipurpalace" },
+    { name: "Kedarnath Temple", img: "https://source.unsplash.com/featured/?kedarnath" },
+    { name: "Rishikesh", img: "https://source.unsplash.com/featured/?rishikesh" },
+    { name: "Darjeeling", img: "https://source.unsplash.com/featured/?darjeeling" }
   ];
+
+  const moodSuggestions = {
+    romantic: ["Udaipur", "Goa", "Manali", "Ooty"],
+    devotional: ["Varanasi", "Rishikesh", "Tirupati", "Golden Temple"],
+    adventure: ["Leh", "Manali", "Rishikesh", "Jim Corbett"],
+    relaxing: ["Alleppey", "Coorg", "Munnar", "Darjeeling"]
+  };
 
   document.addEventListener("DOMContentLoaded", () => {
     const container = document.getElementById("destinations");
@@ -188,26 +198,27 @@
     });
   });
 
-  function planTrip() {
-    const place = prompt("Enter your destination:");
-    if (place) openMaps(place);
-  }
-
-  function openMaps(place) {
-    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`);
+  function suggestByMood() {
+    const mood = prompt("What's your mood? (romantic, devotional, adventure, relaxing)").toLowerCase();
+    if (!moodSuggestions[mood]) {
+      alert("Mood not recognized. Try romantic, devotional, adventure, or relaxing.");
+      return;
+    }
+    const suggestions = moodSuggestions[mood].map(place => `• ${place}`).join("\n");
+    alert(`Here are some ${mood} places to visit:\n${suggestions}`);
   }
 
   function calculateBudget() {
-    let budget = prompt("Enter your total budget (in ₹):");
-    if (!budget || isNaN(budget)) return alert("Invalid input");
+    let budget = prompt("Enter your budget in ₹:");
+    if (!budget || isNaN(budget)) return alert("Please enter a valid number.");
     budget = parseFloat(budget);
 
-    let hotel = budget * 0.4;
-    let food = budget * 0.2;
-    let transport = budget * 0.3;
-    let extras = budget * 0.1;
+    const hotel = budget * 0.4;
+    const food = budget * 0.2;
+    const transport = budget * 0.3;
+    const extras = budget * 0.1;
 
-    let hotelType = hotel < 2000 ? "Budget Hotel" : hotel < 5000 ? "3-Star Hotel" : hotel < 10000 ? "4-Star Hotel" : "Luxury Hotel";
+    const hotelType = hotel < 2000 ? "Budget Hotel" : hotel < 5000 ? "3-Star Hotel" : hotel < 10000 ? "4-Star Hotel" : "Luxury Hotel";
 
     document.getElementById("budget-output").innerHTML = `
       <p><strong>Hotel:</strong> ₹${hotel.toFixed(0)} (${hotelType})</p>
@@ -216,49 +227,10 @@
       <p><strong>Extras:</strong> ₹${extras.toFixed(0)}</p>
     `;
   }
-</script>
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
-<script>
-  let autocomplete;
-  function initAutocomplete() {
-    autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById('autocomplete'),
-      { types: ['(cities)'] }
-    );
-    autocomplete.addListener('place_changed', onPlaceChanged);
-  }
 
-  function onPlaceChanged() {
-    const place = autocomplete.getPlace();
-    if (!place.geometry) return;
-    const location = place.geometry.location;
-    searchHotels(location.lat(), location.lng());
+  function openMaps(place) {
+    window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`);
   }
-
-  function searchHotels(lat, lng) {
-    const service = new google.maps.places.PlacesService(document.createElement('div'));
-    const request = {
-      location: new google.maps.LatLng(lat, lng),
-      radius: '5000',
-      type: ['lodging']
-    };
-    service.nearbySearch(request, (results, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) displayHotels(results);
-    });
-  }
-
-  function displayHotels(hotels) {
-    const results = document.getElementById('hotel-results');
-    results.innerHTML = '';
-    hotels.forEach(hotel => {
-      const div = document.createElement('div');
-      div.className = 'destination-card';
-      div.innerHTML = `<h3>${hotel.name}</h3><p>${hotel.vicinity}</p><p>Rating: ${hotel.rating || 'N/A'}</p>`;
-      results.appendChild(div);
-    });
-  }
-
-  google.maps.event.addDomListener(window, 'load', initAutocomplete);
 </script>
 
 </body>
