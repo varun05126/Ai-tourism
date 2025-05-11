@@ -4,116 +4,158 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Tourism Planner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
     body {
       margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(to right, #1c1c1c, #2c3e50);
-      color: white;
+      background: #f5f5f5;
+      color: #333;
     }
 
     header {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 30px 0;
+      background: url('https://source.unsplash.com/1600x500/?travel,india') center/cover no-repeat;
+      height: 60vh;
+      color: white;
       text-align: center;
-      color: #fff;
-      background-image: url("https://source.unsplash.com/1600x400/?travel,landscape");
-      background-size: cover;
-      background-position: center;
+      padding-top: 100px;
+      box-shadow: inset 0 0 0 2000px rgba(0, 0, 0, 0.3);
     }
 
     header h1 {
-      font-size: 3em;
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-      border-radius: 10px;
-      display: inline-block;
+      font-size: 3rem;
+      margin-bottom: 10px;
     }
 
-    section {
-      padding: 40px 20px;
-      max-width: 1100px;
-      margin: auto;
-    }
-
-    h2 {
-      color: #ffe600;
-      margin-bottom: 20px;
+    .mood-buttons {
+      margin: 30px auto;
       text-align: center;
     }
 
-    .btn-group {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .btn {
-      background: #00c9ff;
-      color: white;
-      padding: 12px 20px;
-      font-size: 1em;
+    .mood-buttons button {
+      margin: 0 10px;
+      padding: 10px 20px;
       border: none;
-      border-radius: 10px;
-      margin: 10px;
+      border-radius: 25px;
+      background: #0066ff;
+      color: white;
+      font-size: 1rem;
       cursor: pointer;
       transition: 0.3s;
     }
 
-    .btn:hover {
-      background: #005bea;
+    .mood-buttons button:hover {
+      background: #004bb5;
     }
 
-    .destination-grid {
+    .destinations {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
     }
 
-    .destination-card {
-      background: rgba(255, 255, 255, 0.1);
+    .card {
+      background: white;
       border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card p {
       padding: 15px;
-      transition: 0.3s;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      font-weight: 600;
     }
 
-    .destination-card:hover {
-      transform: scale(1.05);
+    section {
+      padding: 40px 20px;
+      text-align: center;
     }
 
-    .destination-card .bg-img {
-      height: 150px;
+    #budget-output, #hotel-results {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    input[type="text"] {
+      padding: 10px;
       border-radius: 8px;
-      background-size: cover;
-      background-position: center;
-      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      width: 300px;
+      margin: 10px 0;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      background: #ff5a5f;
+      color: white;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background: #d64550;
     }
 
     footer {
+      background: #222;
+      color: white;
       text-align: center;
-      background: #111;
       padding: 20px;
-      margin-top: 40px;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Explore with AI Tourism Planner</h1>
+  <h1>AI Tourism Planner</h1>
+  <p>Discover trips that match your mood and budget</p>
 </header>
 
 <section>
-  <h2>Select Your Mood</h2>
-  <div class="btn-group">
-    <button class="btn" onclick="suggestMood('romantic')">Romantic</button>
-    <button class="btn" onclick="suggestMood('devotional')">Devotional</button>
-    <button class="btn" onclick="suggestMood('adventure')">Adventure</button>
-    <button class="btn" onclick="suggestMood('relaxing')">Relaxing</button>
+  <h2>Choose Your Mood</h2>
+  <div class="mood-buttons">
+    <button onclick="showDestinations('romantic')">Romantic</button>
+    <button onclick="showDestinations('devotional')">Devotional</button>
+    <button onclick="showDestinations('adventure')">Adventure</button>
+    <button onclick="showDestinations('relaxing')">Relaxing</button>
   </div>
+  <div class="destinations" id="destinations"></div>
+</section>
 
-  <div id="suggestions" class="destination-grid"></div>
+<section id="budget">
+  <h2>Estimate Your Trip Budget</h2>
+  <button class="btn" onclick="calculateBudget()">Calculate Budget</button>
+  <div id="budget-output"></div>
+</section>
+
+<section id="hotel-search">
+  <h2>Find Hotels Near You</h2>
+  <input id="autocomplete" type="text" placeholder="Enter a city" />
+  <div id="hotel-results"></div>
 </section>
 
 <footer>
@@ -121,43 +163,108 @@
 </footer>
 
 <script>
-  const moodDestinations = {
-    romantic: [
-      { name: "Udaipur", img: "https://source.unsplash.com/400x300/?udaipur,lake" },
-      { name: "Manali", img: "https://source.unsplash.com/400x300/?manali,couple" },
-      { name: "Goa Beach", img: "https://source.unsplash.com/400x300/?goa,beach,sunset" }
-    ],
-    devotional: [
-      { name: "Varanasi", img: "https://source.unsplash.com/400x300/?varanasi,temple" },
-      { name: "Tirupati", img: "https://source.unsplash.com/400x300/?tirupati" },
-      { name: "Rameswaram", img: "https://source.unsplash.com/400x300/?rameswaram,temple" }
-    ],
-    adventure: [
-      { name: "Rishikesh", img: "https://source.unsplash.com/400x300/?rishikesh,rafting" },
-      { name: "Leh Ladakh", img: "https://source.unsplash.com/400x300/?leh,ladakh" },
-      { name: "Spiti Valley", img: "https://source.unsplash.com/400x300/?spiti,valley" }
-    ],
-    relaxing: [
-      { name: "Kerala Backwaters", img: "https://source.unsplash.com/400x300/?kerala,backwaters" },
-      { name: "Alleppey", img: "https://source.unsplash.com/400x300/?alleppey,houseboat" },
-      { name: "Andaman Islands", img: "https://source.unsplash.com/400x300/?andaman,island" }
-    ]
-  };
+const moodDestinations = {
+  romantic: [
+    { name: "Udaipur, Rajasthan", img: "https://source.unsplash.com/400x300/?udaipur" },
+    { name: "Manali, Himachal Pradesh", img: "https://source.unsplash.com/400x300/?manali" },
+    { name: "Goa", img: "https://source.unsplash.com/400x300/?goa" },
+    { name: "Munnar, Kerala", img: "https://source.unsplash.com/400x300/?munnar" }
+  ],
+  devotional: [
+    { name: "Varanasi, Uttar Pradesh", img: "https://source.unsplash.com/400x300/?varanasi" },
+    { name: "Amritsar, Punjab", img: "https://source.unsplash.com/400x300/?golden-temple" },
+    { name: "Tirupati, Andhra Pradesh", img: "https://source.unsplash.com/400x300/?tirupati" },
+    { name: "Rameswaram, Tamil Nadu", img: "https://source.unsplash.com/400x300/?rameswaram" }
+  ],
+  adventure: [
+    { name: "Leh-Ladakh, J&K", img: "https://source.unsplash.com/400x300/?ladakh" },
+    { name: "Rishikesh, Uttarakhand", img: "https://source.unsplash.com/400x300/?rishikesh" },
+    { name: "Spiti Valley, HP", img: "https://source.unsplash.com/400x300/?spiti-valley" },
+    { name: "Meghalaya", img: "https://source.unsplash.com/400x300/?meghalaya" }
+  ],
+  relaxing: [
+    { name: "Kerala Backwaters", img: "https://source.unsplash.com/400x300/?kerala,backwaters" },
+    { name: "Andaman Islands", img: "https://source.unsplash.com/400x300/?andaman" },
+    { name: "Coorg, Karnataka", img: "https://source.unsplash.com/400x300/?coorg" },
+    { name: "Alleppey, Kerala", img: "https://source.unsplash.com/400x300/?alleppey" }
+  ]
+};
 
-  function suggestMood(mood) {
-    const container = document.getElementById("suggestions");
-    container.innerHTML = '';
-    moodDestinations[mood].forEach(place => {
-      const card = document.createElement("div");
-      card.className = "destination-card";
-      card.innerHTML = `
-        <div class="bg-img" style="background-image: url('${place.img}');"></div>
-        <h3>${place.name}</h3>
-      `;
-      container.appendChild(card);
-    });
-  }
+function showDestinations(mood) {
+  const container = document.getElementById('destinations');
+  container.innerHTML = '';
+  moodDestinations[mood].forEach(place => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<img src="${place.img}" alt="${place.name}"/><p>${place.name}</p>`;
+    div.onclick = () => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place.name)}`);
+    container.appendChild(div);
+  });
+}
+
+function calculateBudget() {
+  let budget = prompt("Enter your total budget (in ₹):");
+  if (!budget || isNaN(budget)) return alert("Invalid input");
+  budget = parseFloat(budget);
+  let hotel = budget * 0.4;
+  let food = budget * 0.2;
+  let transport = budget * 0.3;
+  let extras = budget * 0.1;
+
+  let hotelType = hotel < 2000 ? "Budget Hotel" : hotel < 5000 ? "3-Star Hotel" : hotel < 10000 ? "4-Star Hotel" : "Luxury Hotel";
+
+  document.getElementById("budget-output").innerHTML = `
+    <p><strong>Hotel:</strong> ₹${hotel.toFixed(0)} (${hotelType})</p>
+    <p><strong>Food:</strong> ₹${food.toFixed(0)}</p>
+    <p><strong>Transport:</strong> ₹${transport.toFixed(0)}</p>
+    <p><strong>Extras:</strong> ₹${extras.toFixed(0)}</p>
+  `;
+}
+
+// Google Maps Autocomplete & Hotel Search
+let autocomplete;
+function initAutocomplete() {
+  autocomplete = new google.maps.places.Autocomplete(
+    document.getElementById('autocomplete'),
+    { types: ['(cities)'] }
+  );
+  autocomplete.addListener('place_changed', onPlaceChanged);
+}
+
+function onPlaceChanged() {
+  const place = autocomplete.getPlace();
+  if (!place.geometry) return;
+  const location = place.geometry.location;
+  searchHotels(location.lat(), location.lng());
+}
+
+function searchHotels(lat, lng) {
+  const service = new google.maps.places.PlacesService(document.createElement('div'));
+  const request = {
+    location: new google.maps.LatLng(lat, lng),
+    radius: '5000',
+    type: ['lodging']
+  };
+  service.nearbySearch(request, (results, status) => {
+    if (status === google.maps.places.PlacesServiceStatus.OK) displayHotels(results);
+  });
+}
+
+function displayHotels(hotels) {
+  const results = document.getElementById('hotel-results');
+  results.innerHTML = '';
+  hotels.forEach(hotel => {
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `<p><strong>${hotel.name}</strong><br>${hotel.vicinity}<br>Rating: ${hotel.rating || 'N/A'}</p>`;
+    results.appendChild(div);
+  });
+}
+
+google.maps.event.addDomListener(window, 'load', initAutocomplete);
 </script>
 
+<!-- Replace YOUR_API_KEY below -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
 </body>
 </html>
